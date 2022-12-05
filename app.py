@@ -1,10 +1,49 @@
 import dash_bootstrap_components as dbc
+from dash_bootstrap_components._components.Container import Container
 from dash import Dash, Input, Output, State, html, dcc
 import plotly.express as px
 import pandas as pd
 
 # Main App --------------------------------------------------------------------
-app = Dash(__name__)
+app = Dash(external_stylesheets=[dbc.themes.LITERA])
+
+# Set Up ----------------------------------------------------------------------
+VEKTIR_LOGO = "/assets/img/Website_Color_Logo.png"
+VEKTIR_TEXT = "/assets/img/Logo-Text-Only.png"
+
+# Sidebar
+sidebar = html.Div([
+    dbc.Offcanvas(
+        html.P("Welcome to Vektir Labs"),
+        id="offcanvas-backdrop",
+        title="Vektir Labs",
+        is_open=False,
+    ),
+])
+
+# Navbar 
+navbar = dbc.Row(
+    children=[
+        dbc.Col(html.P(''),width=2),
+        dbc.Col(html.Img(src=VEKTIR_TEXT, height="60px",),className='text-center',width=8),
+        dbc.Col([
+            dbc.DropdownMenu(
+                children=[
+                    dbc.DropdownMenuItem("App List", header=True),
+                    dbc.DropdownMenuItem("App 1", href="#"),
+                    dbc.DropdownMenuItem("App 2", href="#"),
+                ],
+                nav=True,
+                in_navbar=True,
+                label="Apps",
+            )
+            
+            ],width=2,),
+        html.P(''),
+        html.Hr(),
+    ]
+    ,style={"margin":"10", "background":"white"}
+)
 
 # Data ------------------------------------------------------------------------
 df = pd.DataFrame({
@@ -15,73 +54,45 @@ df = pd.DataFrame({
 
 fig = px.bar(df, x="Fruit", y="Amount", color="City", barmode="group")
 
-# Sidebar panel ---------------------------------------------------------------
-backdrop_selector = html.Div(
-    [
-        dbc.Label("Backdrop:"),
-        dbc.RadioItems(
-            id="offcanvas-backdrop-selector",
-            options=[
-                {"label": "True (default)", "value": True},
-                {"label": "False", "value": False},
-                {"label": "Static (no dismiss)", "value": "static"},
-            ],
-            inline=True,
-            value=True,
-        ),
-    ],
-    className="mb-2",
-)
-
-offcanvas = html.Div(
-    [
-        backdrop_selector,
-        dbc.Button(
-            "Open backdrop offcanvas", id="open-offcanvas-backdrop", n_clicks=0
-        ),
-        dbc.Offcanvas(
-            html.P("Here is some content..."),
-            id="offcanvas-backdrop",
-            title="Offcanvas with/without backdrop",
-            is_open=False,
-        ),
+# App layout ------------------------------------------------------------------
+app.layout = html.Div(
+    children=[
+        navbar,
+        # sidebar,
+        dbc.Row([
+            dbc.Col(
+                html.Div([
+                    dcc.Graph(
+                        id='example-graph',
+                        figure=fig
+                        )
+                ], style={'margin':20, 'textAlign': 'center'}),width=12), 
+        ]),
     ]
 )
 
-# App layout ------------------------------------------------------------------
-app.layout = html.Div(children=[
-    html.H1(children='Hello Dash'),
-
-    html.Div(children='''
-        Dash: A web application framework for your data.
-    '''),
-
-    dcc.Graph(
-        id='example-graph',
-        figure=fig
-    ),
-    offcanvas,
-    backdrop_selector
-])
-
 # Callbacks -------------------------------------------------------------------
-@app.callback(
-    Output("offcanvas-backdrop", "backdrop"),
-    [Input("offcanvas-backdrop-selector", "value")],
-)
-def select_backdrop(backdrop):
-    return backdrop
+# Sidebar toggle
+# @app.callback(
+#     Output("offcanvas-backdrop", "is_open"),
+#     Input("open-offcanvas-backdrop", "n_clicks"),
+#     State("offcanvas-backdrop", "is_open"),
+# )
+# def toggle_offcanvas(n1, is_open):
+#     if n1:
+#         return not is_open
+#     return is_open
 
-
-@app.callback(
-    Output("offcanvas-backdrop", "is_open"),
-    Input("open-offcanvas-backdrop", "n_clicks"),
-    State("offcanvas-backdrop", "is_open"),
-)
-def toggle_offcanvas(n1, is_open):
-    if n1:
-        return not is_open
-    return is_open
+# Navbar toggle
+# @app.callback(
+#     Output("navbar-collapse", "is_open"),
+#     [Input("navbar-toggler", "n_clicks")],
+#     [State("navbar-collapse", "is_open")],
+# )
+# def toggle_navbar_collapse(n, is_open):
+#     if n:
+#         return not is_open
+#     return is_open
 
 # Main ------------------------------------------------------------------------
 if __name__ == '__main__':
