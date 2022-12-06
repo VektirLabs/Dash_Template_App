@@ -101,6 +101,10 @@ celerybeat.pid
 # SageMath parsed files
 *.sage.py
 
+# From heroku 
+*.pyc
+.DS_Store
+
 # Environments
 .env
 .venv
