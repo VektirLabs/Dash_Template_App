@@ -10,12 +10,13 @@ from components import content as cb
 # Main App --------------------------------------------------------------------
 app = Dash(external_stylesheets=[dbc.themes.LITERA])
 
-# App components & Layout -----------------------------------------------------
+# App components --------------------------------------------------------------
 navbar  = nb.get_navbar()
 sidebar = sb.get_sidebar()
 content = cb.get_page_content()
 url = dcc.Location(id='url')
 
+# App Layout ------------------------------------------------------------------
 app.layout = html.Div([url, navbar, sidebar, content])
 
 # Callbacks -------------------------------------------------------------------
