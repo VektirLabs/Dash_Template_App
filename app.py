@@ -3,96 +3,38 @@ from dash_bootstrap_components._components.Container import Container
 from dash import Dash, Input, Output, State, html, dcc
 import plotly.express as px
 import pandas as pd
+from components import sidebar as sb
+from components import navbar as nb
+from components import content as cb
 
 # Main App --------------------------------------------------------------------
 app = Dash(external_stylesheets=[dbc.themes.LITERA])
 
-# Set Up ----------------------------------------------------------------------
-VEKTIR_LOGO = "/assets/img/Website_Color_Logo.png"
-VEKTIR_TEXT = "/assets/img/Logo-Text-Only.png"
+# App components & Layout -----------------------------------------------------
+navbar  = nb.get_navbar()
+sidebar = sb.get_sidebar()
+content = cb.get_page_content()
+url = dcc.Location(id='url')
 
-# Sidebar
-sidebar = html.Div([
-    dbc.Offcanvas(
-        html.P("Welcome to Vektir Labs"),
-        id="offcanvas-backdrop",
-        title="Vektir Labs",
-        is_open=False,
-    ),
-])
-
-# Navbar 
-navbar = dbc.Row(
-    children=[
-        dbc.Col(html.P(''),width=2),
-        dbc.Col(html.Img(src=VEKTIR_TEXT, height="60px",),className='text-center',width=8),
-        dbc.Col([
-            dbc.DropdownMenu(
-                children=[
-                    dbc.DropdownMenuItem("App List", header=True),
-                    dbc.DropdownMenuItem("App 1", href="#"),
-                    dbc.DropdownMenuItem("App 2", href="#"),
-                ],
-                nav=True,
-                in_navbar=True,
-                label="Apps",
-            )
-            
-            ],width=2,),
-        html.P(''),
-        html.Hr(),
-    ]
-    ,style={"margin":"10", "background":"white"}
-)
-
-# Data ------------------------------------------------------------------------
-df = pd.DataFrame({
-    "Fruit": ["Apples", "Oranges", "Bananas", "Apples", "Oranges", "Bananas"],
-    "Amount": [4, 1, 2, 2, 4, 5],
-    "City": ["SF", "SF", "SF", "Montreal", "Montreal", "Montreal"]
-})
-
-fig = px.bar(df, x="Fruit", y="Amount", color="City", barmode="group")
-
-# App layout ------------------------------------------------------------------
-app.layout = html.Div(
-    children=[
-        navbar,
-        # sidebar,
-        dbc.Row([
-            dbc.Col(
-                html.Div([
-                    dcc.Graph(
-                        id='example-graph',
-                        figure=fig
-                        )
-                ], style={'margin':20, 'textAlign': 'center'}),width=12), 
-        ]),
-    ]
-)
+app.layout = html.Div([url, navbar, sidebar, content])
 
 # Callbacks -------------------------------------------------------------------
-# Sidebar toggle
-# @app.callback(
-#     Output("offcanvas-backdrop", "is_open"),
-#     Input("open-offcanvas-backdrop", "n_clicks"),
-#     State("offcanvas-backdrop", "is_open"),
-# )
-# def toggle_offcanvas(n1, is_open):
-#     if n1:
-#         return not is_open
-#     return is_open
-
-# Navbar toggle
-# @app.callback(
-#     Output("navbar-collapse", "is_open"),
-#     [Input("navbar-toggler", "n_clicks")],
-#     [State("navbar-collapse", "is_open")],
-# )
-# def toggle_navbar_collapse(n, is_open):
-#     if n:
-#         return not is_open
-#     return is_open
+@app.callback(Output("page-content", "children"), [Input("url", "pathname")])
+def render_page_content(pathname):
+    if pathname == "/":
+        return html.P("This is the content of the client home page!")
+    elif pathname == "/App-1":
+        return html.P("This is the content of App #1. Yay!")
+    elif pathname == "/App-2":
+        return html.P("This is the content of App #2. Yay!")
+    
+    # If the user tries to reach a different page, return a 404 message
+    return html.Div([
+            html.H1("404: Not found", className="text-danger"),
+            html.Hr(),
+            html.P(f"The pathname {pathname} was not recognised..."),
+        ],className="p-3 bg-light rounded-3",
+    )
 
 # Main ------------------------------------------------------------------------
 if __name__ == '__main__':
