@@ -9,7 +9,8 @@ from components import content as cb
 
 # Main App --------------------------------------------------------------------
 app = Dash(external_stylesheets=[dbc.themes.LITERA])
-
+server = app.server
+ 
 # App components --------------------------------------------------------------
 navbar  = nb.get_navbar()
 sidebar = sb.get_sidebar()
