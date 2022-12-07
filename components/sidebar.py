@@ -5,8 +5,8 @@ import plotly.express as px
 import pandas as pd
 
 # Globals ----------------------------------------------------------------------
-VEKTIR_LOGO = "/assets/img/Website_Color_Logo.png"
-VEKTIR_TEXT = "/assets/img/Logo-Text-Only.png"
+VEKTIR_LOGO = "https://github.com/VektirLabs/Dash_Template_App/blob/v1.0/assets/img/Website_Color_Logo.png"
+VEKTIR_TEXT = "https://github.com/VektirLabs/Dash_Template_App/blob/v1.0/assets/img/Logo-Text-Only.png"
 VEKTIR_COM = "https://vektirlabs.com"
 
 
@@ -28,7 +28,7 @@ def get_sidebar():
                     href=VEKTIR_COM,
                     children=[
                         html.Img(
-                            alt="Link the Vektir Labs hame page",
+                            alt="VektirLabs.com",
                             src=VEKTIR_TEXT,
                             height="60px"
                         )
