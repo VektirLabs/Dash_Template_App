@@ -6,7 +6,7 @@ import pandas as pd
 
 # Globals ----------------------------------------------------------------------
 VEKTIR_LOGO = "https://github.com/VektirLabs/Dash_Template_App/blob/v1.0/assets/img/Website_Color_Logo.png"
-VEKTIR_TEXT = "https://github.com/VektirLabs/Dash_Template_App/blob/v1.0/assets/img/Logo-Text-Only.png"
+VEKTIR_TEXT = "https://storage.cloud.google.com/anvil_works_bucket/Logo-Text-Only.png"
 VEKTIR_COM = "https://vektirlabs.com"
 
 
