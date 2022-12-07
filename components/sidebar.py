@@ -7,7 +7,7 @@ import pandas as pd
 # Globals ----------------------------------------------------------------------
 VEKTIR_LABS_LOGO = "https://github.com/VektirLabs/Dash_Template_App/blob/v1.0/assets/img/Website_Color_Logo.png"
 VEKTIR_LABS_LOGO_TEXT = "https://storage.cloud.google.com/anvil_works_bucket/Logo-Text-Only.png"
-VEKTIVEKTIR_LABS_COMR_COM = "https://vektirlabs.com"
+VEKTIVEKTIR_LABS_COM = "https://vektirlabs.com"
 
 
 # Sidebar ----------------|
